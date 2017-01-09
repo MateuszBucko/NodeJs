@@ -27,8 +27,7 @@ $(document).ready(function(){
         newabook.children(".category").text(book.category);
         newabook.children(".description").text(book.description);
         newabook.children(".publisher").text(book.publisher);
-        
-        newabook.css("visibility","show");
+
         
         table.append(newabook);
         newabook.show();
@@ -40,8 +39,6 @@ $(document).ready(function(){
         newauthor.children(".id").text(author.id);
         newauthor.children(".name").text(author.name);
         newauthor.children(".surname").text(author.surname);
-        
-        newauthor.css("visibility","show");
         
         table.append(newauthor);
         newauthor.show();
