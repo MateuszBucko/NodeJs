@@ -1,0 +1,32 @@
+[
+    {
+      "id": "1",
+      "name": "Stanisław",
+      "surname": "Lem"
+    },
+    {
+      "id": "2",
+      "name": "Andrzej",
+      "surname": "Sapkowski"
+    },
+    {
+      "id": "3",
+      "name": "George",
+      "surname": "Orwell"
+    },
+    {
+      "id": "4",
+      "name": "Earnest",
+      "surname": "Hemingway"
+    },
+    {
+      "id": "5",
+      "name": "Mark",
+      "surname": "Twain"
+    },
+    {
+      "id": "6",
+      "name": "Stephen",
+      "surname": "King"
+    }
+ ]

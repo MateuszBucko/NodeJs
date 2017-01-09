@@ -1,0 +1,86 @@
+[
+    {
+      "id": "1",
+      "isbn": "1048394675109",
+      "title": "Dzienniki gwiazdowe",
+      "title_en": "The Star Daries",
+      "publisher": "Biały Kruk",
+      "category": "Fantastyka",
+      "quantity": "10",
+      "description": "Cykl opowiadań Stanisława Lema.",
+      "add_date": "2014-05-12",
+	  "authors":["1","2"]
+    },
+    {
+      "id": "2",
+      "isbn": "1954388201923",
+      "title": "Pożegnanie z bronią",
+      "title_en": "A Farewell to Arms",
+      "publisher": "Neriton",
+      "category": "Powieść",
+      "quantity": "10",
+      "description": "Utwór opowiada o losach młodego Amerykanina, Fredericka Henry’ego, który w czasie wojny pracuje na froncie włosko-austriackim jako sanitariusz Czerwonego Krzyża.",
+      "add_date": "2016-01-05",
+	  "authors":["4","1","5"]
+    },
+    {
+      "id": "3",
+      "isbn": "3437182930991",
+      "title": "Miasteczko Salem",
+      "title_en": "Salem",
+      "publisher": "Genius Creations",
+      "category": "Horror",
+      "quantity": "10",
+      "description": "Pisarz Ben Mears powraca do miejsca, gdzie spędził dzieciństwo – małego miasteczka Jerozolima zwanego też Salem. Główny bohater jest zainteresowany domostwem rodziny Marstenów, w którym wcześniej doszło do tragicznych wydarzeń.Wkrótce w Salem w dziwnych okolicznościach zaczynają umierać ludzie.",
+      "add_date": "2016-05-12",
+	  "authors":["1"]
+    },
+    {
+      "id": "4",
+      "isbn": "5401289801224",
+      "title": "Pani Jeziora",
+      "title_en": "Ladyof the Lake",
+      "publisher": "Genius Creations",
+      "category": "Fantastyka",
+      "quantity": "10",
+      "description": "Piąty - i ostatni - tom sagi o wiedźminie Geralcie.",
+      "add_date": "2013-03-10",
+	  "authors":["4"]
+    },
+    {
+      "id": "5",
+      "isbn": "8450213859346",
+      "title": "Bajki robotów",
+      "title_en": "Fables for Robots",
+      "publisher": "Fabryka Słów",
+      "category": "Fantastyka",
+      "quantity": "10",
+      "description": "Zbiór groteskowo-baśniowych opowiadań Stanisława Lema.Utwory zostały napisane w konwencji baśni ludowej i osadzone w świecie futurystyczno-kosmicznej technologii, w którym bohaterami i narratorami są roboty.",
+      "add_date": "2002-04-05",
+	  "authors":["5","3"]
+    },
+    {
+      "id": "6",
+      "isbn": "8532118594012",
+      "title": "Folwark zwierzęcy",
+      "title_en": "Animal Farm",
+      "publisher": "Genius Creations",
+      "category": "Antyutopia",
+      "quantity": "10",
+      "description": "Orwell przedstawia prostą historię buntu zwierząt na typowej angielskiej farmie. Zwierzęta z Manor Farm rozpoczynają rewolucję przeciwko ludziom.Książka jest alegorycznym przedstawieniem stalinizmu i jednocześnie głośnym ostrzeżeniem przed każdym totalitaryzmem.",
+      "add_date": "2015-03-03",
+	  "authors":["3","2","1"]
+    },
+    {
+      "id": "7",
+      "isbn": "9432201948590",
+      "title": "Przygody Hucka",
+      "title_en": "Adventures of Huck",
+      "publisher": "Nowy Świat",
+      "category": "Powieść",
+      "quantity": "10",
+      "description": "Powieść dla młodzieży.Jest kontynuacją Przygód Tomka Sawyera, lecz głównym bohaterem jest Huckleberry Finn, występujący wcześniej w Przygodach Tomka jako postać drugoplanowa.",
+      "add_date": "2015-03-10",
+	  "authors":["1","2"]
+    }
+ ]
