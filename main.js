@@ -1,19 +1,22 @@
-
 var express = require('express');
 var bodyParser = require('body-parser');
-var cors = require('cors');
-
-var port = +process.argv[2];
-
+var cors = require('cors')
+var port = 8080;
+var authors = [];
+var books = [];
+var bookId = 1;
+var authorId = 1;
 var app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var authors = [];
-var books = [];
-var bookId = 1;
-var authorId = 1;
+    
+app.set('view engine', 'jade');
+
+app.get('/', function(req, res){
+  res.render("index");
+});
 
 //funkcje znajdowania
 
@@ -65,26 +68,26 @@ function removeAuthor(id) {
 
 //operacje GET
 
-// pobranie wszystkich autorów
-app.get('authors',function(request,response){
-	console.log('Pobieranie autorów - GET');
+// pobranie wszystkich autorÃ³w
+app.get('/authors',function(request,response){
+	console.log('Pobieranie autorÃ³w - GET');
 	response.json(authors);
 });
 
 
 // pobranie wszystkich ksiazek
-app.get('books',function(request,response){
-	console.log('Pobieranie ksi¹¿ek - GET');
+app.get('/books',function(request,response){
+	console.log('Pobieranie ksiÂ¹Â¿ek - GET');
 	response.json(books);
 });
 
 
 //operacje POST
 
-// dodanie ksi¹¿ki
+// dodanie ksiÂ¹Â¿ki
 app.post('/books', function(request,response){
 	var book = request.body;
-	console.log("Wstawianie ksi¹¿ki z zapytania: " + JSON.stringify(book));
+	console.log("Wstawianie ksiÂ¹Â¿ki z zapytania: " + JSON.stringify(book));
 	book.id = bookId++;
 	books.push(book);
 	response.send(book);
@@ -102,13 +105,13 @@ app.post('/authors', function(request,response){
 
 //operacje PUT
 
-//update ksia¿ki
+//update ksiaÂ¿ki
 app.put('/books/:id',function(request,response){
 	var book = request.body;
-	console.log("Uaktualnianie ksi¹¿ki z zapytania: " + JSON.stringify(book));
+	console.log("Uaktualnianie ksiÂ¹Â¿ki z zapytania: " + JSON.stringify(book));
 	var currentBook = findBook(parseInt(request.params.id,10));
 	if(currentBook == null){
-		//zrzucamy b³¹d
+		//zrzucamy bÂ³Â¹d
 		reponse.send(404);
 	}
 	else{
@@ -121,14 +124,14 @@ app.put('/books/:id',function(request,response){
 		currentBook.description = book.description;
 		currentBook.add_date = book.add_date;
 		currentBook.authors = book.authors;
-		console.log("Zakoñczono uaktualnianie ksi¹¿ki");
+		console.log("ZakoÃ±czono uaktualnianie ksiÂ¹Â¿ki");
 	}
 });
 
 //update autora
 app.put('/authors/:id',function(request,response){
 	var author = request.body;
-	console.log("Uaktualnianie ksi¹¿ki z zapytania: " + JSON.stringify(author));
+	console.log("Uaktualnianie ksiÂ¹Â¿ki z zapytania: " + JSON.stringify(author));
 	var currentAuthor = findAuthor(parseInt(request.params.id,10));
 	if (currentAuthor === null) {
         response.send(404);
@@ -136,23 +139,23 @@ app.put('/authors/:id',function(request,response){
 	else{
 		currentAuthor.name = author.name;
 		currentAuthor.surname = author.surname;
-		console.log("Zakoñczono uaktualnianie autora");
+		console.log("ZakoÃ±czono uaktualnianie autora");
 	}
 });
 
 
 //operacje DELETE
 
-//usuwanie ksi¹¿ki
+//usuwanie ksiÂ¹Â¿ki
 app.delete('/books/:id',function(request,response){
-	console.log("Próba usuniêcia ksi¹¿ki z id: " + parseInt(request.params.id, 10));
+	console.log("PrÃ³ba usuniÃªcia ksiÂ¹Â¿ki z id: " + parseInt(request.params.id, 10));
 	var book = findBook(parseInt(request.params.id, 10));
     if (book === null) {
-        console.log('Nie mo¿na znaleŸæ tej ksi¹¿ki');
+        console.log('Nie moÂ¿na znaleÅ¸Ã¦ tej ksiÂ¹Â¿ki');
         response.send(404);
     }
     else {
-        console.log('Usuwanie ksi¹¿ki o id: ' + request.params.id);
+        console.log('Usuwanie ksiÂ¹Â¿ki o id: ' + request.params.id);
         removeBook(parseInt(request.params.id, 10));
         response.send(book);
     }
@@ -160,10 +163,10 @@ app.delete('/books/:id',function(request,response){
 
 //usuwnaie autora
 app.delete('/authors/:id',function(request,response){
-	console.log("Próba usuniêcia autora z id: " + parseInt(request.params.id, 10));
+	console.log("PrÃ³ba usuniÃªcia autora z id: " + parseInt(request.params.id, 10));
 	var author = findAuthor(parseInt(request.params.id,10));
 	if(author === null){
-		console.log('Nie mo¿na znaleŸæ tego autora');
+		console.log('Nie moÂ¿na znaleÅ¸Ã¦ tego autora');
 		response.send(404);
 	}
 	else{
@@ -174,11 +177,6 @@ app.delete('/authors/:id',function(request,response){
 });
 
 
-
-
-
-
-
-
-
-
+app.listen(port, function(){
+  console.log('web server listening on port ' + port);
+});
