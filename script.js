@@ -1,3 +1,6 @@
-$.getJSON("books.json", function(json) {
-    console.log(json); // this will show the info it in firebug console
+$(document).ready(function(){
+   $.get('http://localhost:8080/books', {}, function(data){
+       console.log("wywolane");
+        console.log(data);
+   });
 });
