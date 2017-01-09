@@ -9,10 +9,49 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="../script.js"></script>
     </head>
     <body>
-    <table id="books"></table>
+        <table id="authors_table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Imie</th>
+                    <th>Nazwisko</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="author_prototype" style="visibility: hidden">
+                    <td class="id"></td>
+                    <td class="name"></td>
+                    <td class="surname"></td>
+                </tr>
+            </tbody>
+        </table>
+        <table id="books_table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tytuł</th>
+                    <th>Tytuł angielski</th>
+                    <th>Data dodania</th>
+                    <th>Kategoria</th>
+                    <th>Opis</th>
+                    <th>Wydawca</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="book_prototype" style="visibility: hidden">
+                    <td class="id"></td>
+                    <td class="title"></td>
+                    <td class="title_en"></td>
+                    <td class="add_date"></td>
+                    <td class="category"></td>
+                    <td class="description"></td>
+                    <td class="publisher"></td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>

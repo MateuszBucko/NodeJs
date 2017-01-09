@@ -3,24 +3,47 @@ var QUERY_URL = 'http://localhost:8080/';
 
 $(document).ready(function(){
    $.get(QUERY_URL+'books', {}, function(data){
-       console.log("wywolane");
-        console.log(data);
-        data.forEach(function(book){
-            console.log(data);
-            var row = $("<tr></tr>");
-            var id  = $("<td></td>").text(book.id);
-            var title = $("<td></td>").text(book.title);
-            var title_en = $("<td></td>").text(book.title_en);
-            var isbn = $("<td></td>").text(book.isbn);
-            var add_date = $("<td></td>").text(book.add_date);
-            var category = $("<td></td>").text(book.category);
-            var description = $("<td></td>").text(book.description);
-            var publisher = $("<td></td>").text(book.publisher);
-            var quantity = $("<td></td>").text(book.quantity);
-            var authors = $("<td></td>").text(book.authors);
-            
-            $(row).prepend(id,title,title_en,isbn,add_date,category,description,publisher,quantity,authors);
-            $("#books").append(row);
+        data.forEach(function(data){
+            AddBook(data);
         });
    });
+   
+   $.get(QUERY_URL+'authors', function(data) {
+        data.forEach(function(data){
+            AddAuthor(data);
+        });
+    });
+   
+   
+   function AddBook (book){
+        var table = $("#books_table");
+        var newabook = $("#book_prototype").clone(true);
+        
+        newabook.children(".id").text(book.id);
+        newabook.children(".title").text(book.title);
+        newabook.children(".title_en").text(book.title_en);
+        newabook.children(".isbn").text(book.isbn);
+        newabook.children(".add_date").text(book.add_date);
+        newabook.children(".category").text(book.category);
+        newabook.children(".description").text(book.description);
+        newabook.children(".publisher").text(book.publisher);
+        
+        newabook.css("visibility","show");
+        
+        table.append(newabook);
+        newabook.show();
+    }
+            
+    function AddAuthor(author){
+        var table = $("#authors_table");
+        var newauthor = $("#author_prototype").clone(true);
+        newauthor.children(".id").text(author.id);
+        newauthor.children(".name").text(author.name);
+        newauthor.children(".surname").text(author.surname);
+        
+        newauthor.css("visibility","show");
+        
+        table.append(newauthor);
+        newauthor.show();
+    }
 });
