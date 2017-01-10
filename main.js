@@ -21,6 +21,8 @@ app.get('/', function(req, res){
   res.render("index");
 });
 
+app.use(express.static(__dirname + '/public')); 
+
 //funkcje znajdowania
 
 //znajdz ksiazke
