@@ -26,7 +26,7 @@ app.get('/', function(req, res){
 //znajdz ksiazke
 function findBook(id) {
     for (var i = 0; i < books.length; i++) {
-        if (books[i].id === id) {
+        if (books[i].id == id) {
             return books[i];
         }
     }
@@ -36,7 +36,7 @@ function findBook(id) {
 //znajdz autora
 function findAuthor(id) {
     for (var i = 0; i < authors.length; i++) {
-        if (authors[i].id === id) {
+        if (authors[i].id == id) {
             return authors[i];
         }
     }
@@ -51,7 +51,7 @@ function findAuthor(id) {
 function removeBook(id) {
     var bookIndex = 0;
     for (var i = 0; i < books.length; i++) {
-        if (books[i].id === id) {
+        if (books[i].id == id) {
             bookIndex = i;
         }
     }
@@ -62,7 +62,7 @@ function removeBook(id) {
 function removeAuthor(id) {
     var authorIndex = 0;
     for (var i = 0; i < authors.length; i++) {
-        if (authors[i].id === id) {
+        if (authors[i].id == id) {
             authorIndex = i;
         }
     }
@@ -70,11 +70,32 @@ function removeAuthor(id) {
 }
 
 //operacje GET
-
+app.get('/authors/:id', function (request, response) {
+    console.log('Getting a authors with id ' + request.params.id);
+    var author = findAuthor(parseInt(request.params.id, 10));
+    if (author === null) {
+        response.send(404);
+    }
+    else {
+        response.json(author);
+    }
+});
 // pobranie wszystkich autorów
 app.get('/authors',function(request,response){
 	console.log('Pobieranie autorów - GET');
 	response.json(authors);
+});
+
+app.get('/books/:id', function (request, response) {
+    console.log('Getting a book with id ' + request.params.id);
+    var book = findBook(parseInt(request.params.id, 10));
+    console.log(parseInt(request.params.id, 10));
+    if (book === null) {
+        response.send(404);
+    }
+    else {
+        response.json(book);
+    }
 });
 
 

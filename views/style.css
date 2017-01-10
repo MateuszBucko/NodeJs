@@ -1,0 +1,68 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2017-01-09, 22:14:42
+    Author     : Łukasz
+*/
+
+body {
+  color: #001028;
+  background: #FFFFFF; 
+  font-family: Arial, sans-serif; 
+  font-size: 12px; 
+  font-family: Arial;
+  max-width: 1280px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+header {
+  padding: 10px 0;
+  margin-bottom: 30px;
+}
+
+a {
+  text-decoration: none;
+  font-size:24px;
+  color: red;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background: #F3F6FA;
+}
+
+table tr:nth-child(2n-1) td {
+  background: #C2C4C7;
+}
+
+table th {
+  padding: 5px 20px;
+  color: #FFFFFF;
+  
+  border-bottom: 1px solid #C1CED9;     
+  font-weight: normal;
+  background: #77797A;
+}
+
+table .id {
+  text-align: center;
+  width:5%;
+}
+table .action {
+    width:10%;
+    text-align: right;
+}
+table a {
+    font-size: 16px;
+}
+table td, main table th {
+  padding: 20px;
+  text-align: left;
+  font-size: 1.2em;
+}
