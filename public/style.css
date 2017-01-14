@@ -37,17 +37,25 @@ table {
   background: #F3F6FA;
 }
 
-table tr:nth-child(2n-1) td {
+
+table tr:nth-child(2n-1) {
   background: #C2C4C7;
 }
 
+table tr:hover {
+  background: #D2DFEA
+}
+
 table th {
-  padding: 5px 20px;
+  padding: 5px 0px;
+  height: 40px;
   color: #FFFFFF;
-  
   border-bottom: 1px solid #C1CED9;     
   font-weight: normal;
   background: #77797A;
+  padding-left: 40px;
+  font-size: 1.2em;
+  text-align: center;
 }
 
 table .id {
@@ -61,8 +69,26 @@ table .action {
 table a {
     font-size: 16px;
 }
-table td, main table th {
-  padding: 20px;
+table td {
+  padding:20px 40px;
   text-align: left;
   font-size: 1.2em;
+}
+
+p.header {    
+    display: block;
+    float: left;
+}
+
+.arrow_container {
+    float: left;
+    width: 12px;
+    display: block;
+    height: 3.2em;
+    margin-top: 0.3em;
+    margin-left: 4px;
+}
+
+.sort {
+    font-size: 10px;
 }

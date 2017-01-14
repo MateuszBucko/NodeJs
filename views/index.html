@@ -19,9 +19,27 @@ and open the template in the editor.
             <table id="authors_table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Imie</th>
-                        <th>Nazwisko</th>
+                        <th>
+                            <p class="header">ID</p>
+                            <div class="arrow_container">
+                                <a class="sort" data-bind="click: $root.sortIdDesc" href="#">&#9650</a>
+                                <a class="sort" data-bind="click: $root.sortIdAsc" href="#">&#9660</a>
+                            </div>
+                        </th>
+                        <th>
+                            <p class="header">Imie</p>
+                            <div class="arrow_container">
+                                <a class="sort" data-bind="click: $root.sortNameDesc" href="#">&#9650</a>
+                                <a class="sort" data-bind="click: $root.sortNameAsc" href="#">&#9660</a>
+                            </div>
+                        </th>
+                        <th>
+                            <p class="header">Nazwisko</p>
+                            <div class="arrow_container">
+                                <a class="sort" data-bind="click: $root.sortSurnameDesc" href="#">&#9650</a>
+                                <a class="sort" data-bind="click: $root.sortSurnameAsc" href="#">&#9660</a>
+                            </div>
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -40,13 +58,55 @@ and open the template in the editor.
             <table id="books_table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Tytuł</th>
-                        <th>Tytuł angielski</th>
-                        <th>Data dodania</th>
-                        <th>Kategoria</th>
-                        <th>Opis</th>
-                        <th>Wydawca</th>
+                        <th>
+                            <p class="header">ID</p>
+                            <div class="arrow_container">
+                                <a class="sort" data-bind="click: $root.sort(c_ID,false)" href="#">&#9650</a>
+                                <a class="sort" data-bind="click: $root.sort(c_ID,true)" href="#">&#9660</a>
+                            </div>
+                        </th>
+                        <th>
+                            <p class="header">Tytuł</p>
+                            <div class="arrow_container">
+                                <a class="sort" data-bind="click: $root.sort(c_TITLE,false)" href="#">&#9650</a>
+                                <a class="sort" data-bind="click: $root.sort(c_TITLE,true)" href="#">&#9660</a>
+                            </div>
+                        </th>
+                        <th>
+                            <p class="header">Tytuł angielski</p>
+                            <div class="arrow_container">
+                                <a class="sort" data-bind="click: $root.sort(c_TITLE_EN,false)" href="#">&#9650</a>
+                                <a class="sort" data-bind="click: $root.sort(c_TITLE_EN,true)" href="#">&#9660</a>
+                            </div>
+                        </th>
+                        <th>
+                            <p class="header">Data dodania</p>
+                            <div class="arrow_container">
+                                <a class="sort" data-bind="click: $root.sort(c_DATE,false)" href="#">&#9650</a>
+                                <a class="sort" data-bind="click: $root.sort(c_DATE,true)" href="#">&#9660</a>
+                            </div>
+                        </th>
+                        <th>
+                            <p class="header">Kategoria</p>
+                            <div class="arrow_container">
+                                <a class="sort" data-bind="click: $root.sort(c_CATEGORY,false)" href="#">&#9650</a>
+                                <a class="sort" data-bind="click: $root.sort(c_CATEGORY,true)" href="#">&#9660</a>
+                            </div>
+                        </th>
+                        <th>
+                            <p class="header">Opis</p>
+                            <div class="arrow_container">
+                                <a class="sort" data-bind="click: $root.sort(c_DESCRIPTION,false)" href="#">&#9650</a>
+                                <a class="sort" data-bind="click: $root.sort(c_DESCRIPTION,true)" href="#">&#9660</a>
+                            </div>
+                        </th>
+                        <th>
+                            <p class="header">Wydawca</p>
+                            <div class="arrow_container">
+                                <a class="sort" data-bind="click: $root.sort(c_PUBLISHER,false)" href="#">&#9650</a>
+                                <a class="sort" data-bind="click: $root.sort(c_PUBLISHER,true)" href="#">&#9660</a>
+                            </div>
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
