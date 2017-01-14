@@ -12,6 +12,7 @@ and open the template in the editor.
         <link rel="stylesheet" href="style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="../script.js"></script>
+        <script type="text/javascript" src="http://knockoutjs.com/downloads/knockout-3.4.1.js"></script>
     </head>
     <body>
         <div id="content">
@@ -24,16 +25,15 @@ and open the template in the editor.
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr id="author_prototype" style="display: none">
-                        <td class="id"></td>
-                        <td class="name"></td>
-                        <td class="surname"></td>
+                <tbody data-bind="foreach: authors">
+                    <tr>
+                        <td data-bind="text: id"></td>
+                        <td data-bind="text: name"></td>
+                        <td data-bind="text: surname"></td>
                         <td class="action">
-                            <a class="delete_author" href="#">X</a>
+                            <a href="#" data-bind="click: $root.removeAuthor">X</a>
                             <a class="modify" onClick="" href="#">E</a>
                         </td>
-
                     </tr>
                 </tbody>
             </table>
@@ -50,17 +50,17 @@ and open the template in the editor.
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr id="book_prototype" style="display: none">
-                        <td class="id"></td>
-                        <td class="title"></td>
-                        <td class="title_en"></td>
-                        <td class="add_date"></td>
-                        <td class="category"></td>
-                        <td class="description"></td>
-                        <td class="publisher"></td>
+                <tbody  data-bind="foreach: books">
+                    <tr>
+                        <td data-bind="text: id"></td>
+                        <td data-bind="text: title"></td>
+                        <td data-bind="text: title_en"></td>
+                        <td data-bind="text: add_date"></td>
+                        <td data-bind="text: category"></td>
+                        <td data-bind="text: description"></td>
+                        <td data-bind="text: publisher"></td>
                         <td class="action">
-                            <a class="delete_book" href="#">X</a>
+                            <a href="#" data-bind="click: $root.removeBook">X</a>
                             <a class="modify" onClick="" href="#">E</a>
                         </td>
                     </tr>

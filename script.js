@@ -2,87 +2,80 @@ var QUERY_URL = 'http://localhost:8080/';
 var view = 0;
 var books;
 var authors;
+
+function Author(id, name, surname){
+    this.id = ko.observable(id);
+    this.name = ko.observable(name);
+    this.surname = ko.observable(surname);
+}
+
+function AuthorsViewModel() {
+    var self = this;
+    this.authors = ko.observableArray();
+    
+    $.getJSON(QUERY_URL + 'authors', {}, function (data) {
+        var mappedData = $.map(data, function(item){
+            return new Author(item.id,
+                item.name,
+                item.surname);
+        });
+        self.authors(mappedData);
+    });
+    this.removeAuthor = function (author) {
+        $.ajax({
+            url: QUERY_URL + 'authors/' + author.id(),
+            type: 'DELETE',
+            contentType: "application/json",
+            success: function (result) {
+                self.authors.remove(author);
+            }
+        });
+    };
+}
+
+function Book(id, title, title_en, isbn, add_date, category, description, publisher){
+    this.id = ko.observable(id);
+    this.title = ko.observable(title);
+    this.title_en = ko.observable(title_en);
+    this.isbn = ko.observable(isbn);
+    this.add_date = ko.observable(add_date);
+    this.category = ko.observable(category);
+    this.description = ko.observable(description);
+    this.publisher = ko.observable(publisher);
+}
+
+function BooksViewModel() {
+    var self = this;
+    this.books = ko.observableArray();
+    
+    $.getJSON(QUERY_URL + 'books', {}, function (data) {
+        var mappedData = $.map(data, function(item){
+            return new Book(item.id,
+                item.title,
+                item.title_en,
+                item.isbn,
+                item.add_date,
+                item.category,
+                item.description,
+                item.publisher);
+        });
+        self.books(mappedData);
+    });
+    this.removeBook = function (book) {
+        $.ajax({
+            url: QUERY_URL + 'books/' + book.id(),
+            type: 'DELETE',
+            contentType: "application/json",
+            success: function (result) {
+                self.books.remove(book);
+            }
+        });
+    };
+}
+
 $(document).ready(function () {
-    $(".delete_book").click( function(e) {
-    e.preventDefault();
-    var par = $(this).parent().parent();
-    var id = par.find(".id").text() - 1;
-    $.ajax({
-
-        url: QUERY_URL + 'books/' + books[id].id,
-        type: 'DELETE',
-        success: function (result) {
-            books.splice(id, 1);
-            console.log(books);
-            par.nextAll().find(".id").text(function (i, txt) {
-                return txt - 1;
-            });
-            par.remove();
-        }
-    });
+   
+   ko.applyBindings(new BooksViewModel(),document.getElementById("books_table"));
+   ko.applyBindings(new AuthorsViewModel(),document.getElementById("authors_table"));
+  
 });
-
-$(".delete_author").click( function(e) {
-    e.preventDefault();
-    console.log(e);
-    var par = $(this).parent().parent();
-    var id = par.find(".id").text() - 1;
-    $.ajax({
-        url: QUERY_URL + 'authors/' + authors[id].id,
-        type: 'DELETE',
-        success: function (result) {
-            authors.splice(id, 1);
-            par.nextAll().find(".id").text(function (i, txt) {
-                return txt - 1;
-            });
-            par.remove();
-        }
-    });
-});
-    if (books == null)
-        $.get(QUERY_URL + 'books', {}, function (data) {
-            view = 1;
-            books = data;
-            var i = 1;
-            data.forEach(function (books) {
-
-                AddBook(books, i++);
-            });
-        });
-    if (authors == null)
-        $.get(QUERY_URL + 'authors', function (data) {
-            authors = data;
-            var i = 1;
-            data.forEach(function (authors) {
-                AddAuthor(authors, i++);
-            });
-        });
-});
-
-function AddBook(book, id) {
-    var table = $("#books_table");
-    var newabook = $("#book_prototype").clone(true);
-
-    newabook.children(".id").text(id);
-    newabook.children(".title").text(book.title);
-    newabook.children(".title_en").text(book.title_en);
-    newabook.children(".isbn").text(book.isbn);
-    newabook.children(".add_date").text(book.add_date);
-    newabook.children(".category").text(book.category);
-    newabook.children(".description").text(book.description);
-    newabook.children(".publisher").text(book.publisher);
-
-    table.append(newabook);
-    newabook.show();
-}
-
-function AddAuthor(author, id) {
-    var table = $("#authors_table");
-    var newauthor = $("#author_prototype").clone(true);
-    newauthor.children(".id").text(id);
-    newauthor.children(".name").text(author.name);
-    newauthor.children(".surname").text(author.surname);
-
-    table.append(newauthor);
-    newauthor.show();
-}
