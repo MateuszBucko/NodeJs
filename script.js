@@ -3,6 +3,42 @@ var view = 0;
 var books;
 var authors;
 $(document).ready(function () {
+    $(".delete_book").click( function(e) {
+    e.preventDefault();
+    var par = $(this).parent().parent();
+    var id = par.find(".id").text() - 1;
+    $.ajax({
+
+        url: QUERY_URL + 'books/' + books[id].id,
+        type: 'DELETE',
+        success: function (result) {
+            books.splice(id, 1);
+            console.log(books);
+            par.nextAll().find(".id").text(function (i, txt) {
+                return txt - 1;
+            });
+            par.remove();
+        }
+    });
+});
+
+$(".delete_author").click( function(e) {
+    e.preventDefault();
+    console.log(e);
+    var par = $(this).parent().parent();
+    var id = par.find(".id").text() - 1;
+    $.ajax({
+        url: QUERY_URL + 'authors/' + authors[id].id,
+        type: 'DELETE',
+        success: function (result) {
+            authors.splice(id, 1);
+            par.nextAll().find(".id").text(function (i, txt) {
+                return txt - 1;
+            });
+            par.remove();
+        }
+    });
+});
     if (books == null)
         $.get(QUERY_URL + 'books', {}, function (data) {
             view = 1;
@@ -22,40 +58,6 @@ $(document).ready(function () {
             });
         });
 });
-
-function DeleteBook(object) {
-    var par = $(object).parent().parent();
-    var id = par.find(".id").text() - 1;
-    $.ajax({
-
-        url: QUERY_URL + 'books/' + books[id].id,
-        type: 'DELETE',
-        success: function (result) {
-            books.splice(id, 1);
-            console.log(books);
-            par.nextAll().find(".id").text(function (i, txt) {
-                return txt - 1;
-            });
-            par.remove();
-        }
-    });
-}
-
-function DeleteAuthor(object) {
-    var par = $(object).parent().parent();
-    var id = par.find(".id").text() - 1;
-    $.ajax({
-        url: QUERY_URL + 'authors/' + authors[id].id,
-        type: 'DELETE',
-        success: function (result) {
-            authors.splice(id, 1);
-            par.nextAll().find(".id").text(function (i, txt) {
-                return txt - 1;
-            });
-            par.remove();
-        }
-    });
-}
 
 function AddBook(book, id) {
     var table = $("#books_table");
