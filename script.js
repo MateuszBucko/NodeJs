@@ -1,4 +1,4 @@
-            var QUERY_URL = 'http://localhost:8080/';
+ var QUERY_URL = 'http://localhost:8080/';
 var view = 0;
 var books;
 var authors;
@@ -38,7 +38,8 @@ function AuthorsViewModel() {
     this.headers = ko.observableArray([
         new header('id',),
     ]);*/
-    
+    self.nameIn = ko.observable("");
+    self.surnameIn = ko.observable("");
     $.getJSON(QUERY_URL + 'authors', {}, function (data) {
         var mappedData = $.map(data, function(item){
             return new Author(item.id,
@@ -47,7 +48,12 @@ function AuthorsViewModel() {
         });
         self.authors(mappedData);
     });
+    this.add = function () {
+        console.log(this);
+      //self.authors.push(new Authors(this.name, this.surname));  
+    };
     this.removeAuthor = function (author) {
+        console.log(author.id());
         $.ajax({
             url: QUERY_URL + 'authors/' + author.id(),
             type: 'DELETE',
@@ -68,6 +74,22 @@ function AuthorsViewModel() {
             return z.localeCompare(x);
         });
     };
+    this.nextid = ko.computed(function (){
+        return self.authors().length+1;
+    },this);
+    this.add = function(){
+        var newauthor = new Author(15,this.nameIn(),this.surnameIn());
+        $.ajax({
+            url: QUERY_URL + 'authors/',
+            type: 'post',
+            data: ko.toJSON(newauthor),
+            contentType: "application/json",
+            success: function (result) {
+                authors.push(new Author(result.id,result.name,result.surname));
+            }
+        });
+    };
+    
     this.sortIdDesc = function () {self.authors.sort(function(a, b) {return a.id()-b.id();});};
     this.sortNameDesc = function () {self.authors.sort(function(a, b) {return CompareString(a.name(),b.name());});};
     this.sortSurnameDesc = function () {self.authors.sort(function(a, b) {return CompareString(a.surname(),b.surname());});};
@@ -92,7 +114,13 @@ function Book(id, title, title_en, isbn, add_date, category, description, publis
 function BooksViewModel() {
     var self = this;
     this.books = ko.observableArray();
-    
+    this.title = ko.observable("");
+    this.title_en = ko.observable("");
+    this.isbn = ko.observable("");
+    this.add_date = ko.observable("");
+    this.category = ko.observable("");
+    this.description = ko.observable("");
+    this.publisher = ko.observable("");
     $.getJSON(QUERY_URL + 'books', {}, function (data) {
         var mappedData = $.map(data, function(item){
             return new Book(item.id,
@@ -106,6 +134,27 @@ function BooksViewModel() {
         });
         self.books(mappedData);
     });
+    this.add = function(){
+        var newbook = new Book(15,this.title(),
+                this.title_en(),
+                this.isbn(),
+                this.add_date(),
+                this.category(),
+                this.description(),
+                this.publisher());
+        $.ajax({
+            url: QUERY_URL + 'authors/',
+            type: 'post',
+            data: ko.toJSON(newauthor),
+            contentType: "application/json",
+            success: function (result) {
+                authors.push(new Author(result.id,result.name,result.surname));
+            }
+        });
+    };
+    this.nextid = ko.computed(function (){
+        return self.books().length+1;
+    },this);
     this.removeBook = function (book) {
         $.ajax({
             url: QUERY_URL + 'books/' + book.id(),
@@ -157,16 +206,18 @@ function ViewsModel() {
     this.sort = function(a,b){
        console.log(self.selectedView().data);
     }
-      
+    this.add = function(){
+        console.log('lol');
+    }
 }
 var active;
 
 $(document).ready(function () {
    ko.applyBindings(new ViewsModel());
    
-   active = $('.active');
-   $("nav a.active").click();
-   $("nav a").click(function(e){
+   active = $('#navigation_bar a:first-child').addClass('active');
+   $("#navigation_bar a.active").click();
+   $("#navigation_bar a").click(function(e){
        $(active).removeClass('active');
        active = $(this).addClass('active');
    });

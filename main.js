@@ -7,8 +7,8 @@ var jsonBooks = fs.readFileSync("books.json");
 var jsonAuthors = fs.readFileSync("authors.json");
 var authors = JSON.parse(jsonAuthors);
 var books = JSON.parse(jsonBooks);
-var bookId = 1;
-var authorId = 1;
+var bookId = books.length+1;
+var authorId = authors.length+1;
 var app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -117,7 +117,7 @@ app.post('/books', function(request,response){
 	book.id = bookId++;
 	books.push(book);
 	response.send(book);
-})
+});
 
 // dodanie autora
 app.post('/authors', function(request,response){
@@ -125,7 +125,7 @@ app.post('/authors', function(request,response){
 	console.log("Wstawienie autora z zapytania: " + JSON.stringify(author));
 	author.id = authorId++;
 	authors.push(author);
-	reponse.send(author);
+	response.send(author);
 });
 
 

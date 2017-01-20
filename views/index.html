@@ -15,13 +15,23 @@ and open the template in the editor.
         <script src="../script.js"></script>
     </head>
     <body>
-        <nav id="navigation" data-bind="foreach: views">
-            <a data-bind="text: title, click: $root.selectedView" href="#"></a>
+        <nav id="navigation">
+            <div id="navigation_bar" class="navigation" data-bind="foreach: views">
+                <a data-bind="text: title, click: $root.selectedView" href="#"></a>
+            </div>
+            <div id="action_bar" class="navigation">
+                <input type="text" />
+                <a class="search" href="#">Szukaj</a>
+                <a class="add" href="#">+</a>
+            </div>
         </nav>
         <div data-bind="with: selectedView">
-            <div data-bind="template: { name: template, data: data }"></div>
+            <div data-bind="template: { name: template, data: data }">
+                
+            </div>
         </div>
             <script id="authors_template" type="text/html">
+                
                 <table id="authors_table">
                     <thead>
                         <tr>
@@ -48,14 +58,23 @@ and open the template in the editor.
                             </th>
                             <th></th>
                         </tr>
+                        <tr class="add_bar"><td colspan=7>
+                        <form data-bind="submit: add">
+                                    <p data-bind="text: nextid"></p>
+                                    <input type="text" data-bind="value: nameIn" />
+                                    <input type="text" data-bind="value: surnameIn"/>
+                                    <button type="submit">Dodaj</button>
+                        </form>
+                        </td></tr>
                     </thead>
+                    
                     <tbody data-bind="foreach: authors">
                         <tr>
                             <td data-bind="text: id"></td>
                             <td data-bind="text: name"></td>
                             <td data-bind="text: surname"></td>
                             <td class="action">
-                                <a href="#" data-bind="click: $root.removeAuthor">X</a>
+                                <a href="#" data-bind="click: removeAuthor">X</a>
                                 <a class="modify" onClick="" href="#">E</a>
                             </td>
                         </tr>
@@ -102,13 +121,6 @@ and open the template in the editor.
                                 </div>
                             </th>
                             <th>
-                                <p class="header">Opis</p>
-                                <div class="arrow_container">
-                                    <a class="sort" data-bind="click: sort(c_DESCRIPTION,false)" href="#">&#9650;</a>
-                                    <a class="sort" data-bind="click: sort(c_DESCRIPTION,true)" href="#">&#9660;</a>
-                                </div>
-                            </th>
-                            <th>
                                 <p class="header">Wydawca</p>
                                 <div class="arrow_container">
                                     <a class="sort" data-bind="click: sort(c_PUBLISHER,false)" href="#">&#9650;</a>
@@ -117,6 +129,19 @@ and open the template in the editor.
                             </th>
                             <th></th>
                         </tr>
+                        <tr class="add_bar"><td colspan=7>
+                        <form data-bind="submit: add">
+                                    <p data-bind="text: nextid"></p>
+                                    <input type="text" data-bind="value: title"/>
+                                    <input type="text" data-bind="value: title_en"/>
+                                    <input type="text" data-bind="value: isbn"/>
+                                    <input type="text" data-bind="value: add_date"/>
+                                    <input type="text" data-bind="value: category"/>
+                                    <input type="text" data-bind="value: publisher"/>
+                                    <input type="textarea" data-bind="value: description"/>
+                                    <button type="submit">Dodaj</button>
+                        </form>
+                        </td></tr>
                     </thead>
                     <tbody  data-bind="foreach: books">
                         <tr>
@@ -125,10 +150,9 @@ and open the template in the editor.
                             <td data-bind="text: title_en"></td>
                             <td data-bind="text: add_date"></td>
                             <td data-bind="text: category"></td>
-                            <td data-bind="text: description"></td>
                             <td data-bind="text: publisher"></td>
                             <td class="action">
-                                <a href="#" data-bind="click: $root.removeBook">X</a>
+                                <a href="#" data-bind="click: removeBook">X</a>
                                 <a class="modify" onClick="" href="#">E</a>
                             </td>
                         </tr>
