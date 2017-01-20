@@ -1,4 +1,4 @@
-var QUERY_URL = 'http://localhost:8080/';
+            var QUERY_URL = 'http://localhost:8080/';
 var view = 0;
 var books;
 var authors;
@@ -24,9 +24,20 @@ function Author(id, name, surname){
     this.surname = ko.observable(surname);
 }
 
+function header(name,sort_desc,sort_asc,parent){
+    this.name=name;
+    this.sort_desc=parent.sort(sort_desc);
+    this.sort_asc=parent.sort(sort_asc);
+}
+
+
 function AuthorsViewModel() {
     var self = this;
     this.authors = ko.observableArray();
+    /*
+    this.headers = ko.observableArray([
+        new header('id',),
+    ]);*/
     
     $.getJSON(QUERY_URL + 'authors', {}, function (data) {
         var mappedData = $.map(data, function(item){
@@ -105,7 +116,7 @@ function BooksViewModel() {
             }
         });
     };
-    this.sort = function (column,desc) {
+    this.sort = function(column,desc) {
         self.books.sort(function(a, b){
             var z, x;
             switch(column){
@@ -129,12 +140,38 @@ function BooksViewModel() {
     };
 }
 
+function View(title, template, data){
+    this.title=title;
+    this.template=template;
+    this.data=data;
+}
+
+function ViewsModel() {
+    var self = this;
+    
+    this.views = ko.observableArray([
+       new View('books','books_template',BooksViewModel),
+       new View('authors','authors_template',AuthorsViewModel)
+    ]);
+    this.selectedView = ko.observable();
+    this.sort = function(a,b){
+       console.log(self.selectedView().data);
+    }
+      
+}
+var active;
+
 $(document).ready(function () {
+   ko.applyBindings(new ViewsModel());
    
+   active = $('.active');
+   $("nav a.active").click();
+   $("nav a").click(function(e){
+       $(active).removeClass('active');
+       active = $(this).addClass('active');
+   });
    $(".sort").click(function(e){
       e.preventDefault(); 
    });
-   ko.applyBindings(new BooksViewModel(),document.getElementById("books_table"));
-   ko.applyBindings(new AuthorsViewModel(),document.getElementById("authors_table"));
-  
+
 });

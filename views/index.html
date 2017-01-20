@@ -11,121 +11,129 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="../script.js"></script>
         <script type="text/javascript" src="http://knockoutjs.com/downloads/knockout-3.4.1.js"></script>
+        <script src="../script.js"></script>
     </head>
     <body>
-        <div id="content">
-            <table id="authors_table">
-                <thead>
-                    <tr>
-                        <th>
-                            <p class="header">ID</p>
-                            <div class="arrow_container">
-                                <a class="sort" data-bind="click: $root.sortIdDesc" href="#">&#9650</a>
-                                <a class="sort" data-bind="click: $root.sortIdAsc" href="#">&#9660</a>
-                            </div>
-                        </th>
-                        <th>
-                            <p class="header">Imie</p>
-                            <div class="arrow_container">
-                                <a class="sort" data-bind="click: $root.sortNameDesc" href="#">&#9650</a>
-                                <a class="sort" data-bind="click: $root.sortNameAsc" href="#">&#9660</a>
-                            </div>
-                        </th>
-                        <th>
-                            <p class="header">Nazwisko</p>
-                            <div class="arrow_container">
-                                <a class="sort" data-bind="click: $root.sortSurnameDesc" href="#">&#9650</a>
-                                <a class="sort" data-bind="click: $root.sortSurnameAsc" href="#">&#9660</a>
-                            </div>
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody data-bind="foreach: authors">
-                    <tr>
-                        <td data-bind="text: id"></td>
-                        <td data-bind="text: name"></td>
-                        <td data-bind="text: surname"></td>
-                        <td class="action">
-                            <a href="#" data-bind="click: $root.removeAuthor">X</a>
-                            <a class="modify" onClick="" href="#">E</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table id="books_table">
-                <thead>
-                    <tr>
-                        <th>
-                            <p class="header">ID</p>
-                            <div class="arrow_container">
-                                <a class="sort" data-bind="click: $root.sort(c_ID,false)" href="#">&#9650</a>
-                                <a class="sort" data-bind="click: $root.sort(c_ID,true)" href="#">&#9660</a>
-                            </div>
-                        </th>
-                        <th>
-                            <p class="header">Tytuł</p>
-                            <div class="arrow_container">
-                                <a class="sort" data-bind="click: $root.sort(c_TITLE,false)" href="#">&#9650</a>
-                                <a class="sort" data-bind="click: $root.sort(c_TITLE,true)" href="#">&#9660</a>
-                            </div>
-                        </th>
-                        <th>
-                            <p class="header">Tytuł angielski</p>
-                            <div class="arrow_container">
-                                <a class="sort" data-bind="click: $root.sort(c_TITLE_EN,false)" href="#">&#9650</a>
-                                <a class="sort" data-bind="click: $root.sort(c_TITLE_EN,true)" href="#">&#9660</a>
-                            </div>
-                        </th>
-                        <th>
-                            <p class="header">Data dodania</p>
-                            <div class="arrow_container">
-                                <a class="sort" data-bind="click: $root.sort(c_DATE,false)" href="#">&#9650</a>
-                                <a class="sort" data-bind="click: $root.sort(c_DATE,true)" href="#">&#9660</a>
-                            </div>
-                        </th>
-                        <th>
-                            <p class="header">Kategoria</p>
-                            <div class="arrow_container">
-                                <a class="sort" data-bind="click: $root.sort(c_CATEGORY,false)" href="#">&#9650</a>
-                                <a class="sort" data-bind="click: $root.sort(c_CATEGORY,true)" href="#">&#9660</a>
-                            </div>
-                        </th>
-                        <th>
-                            <p class="header">Opis</p>
-                            <div class="arrow_container">
-                                <a class="sort" data-bind="click: $root.sort(c_DESCRIPTION,false)" href="#">&#9650</a>
-                                <a class="sort" data-bind="click: $root.sort(c_DESCRIPTION,true)" href="#">&#9660</a>
-                            </div>
-                        </th>
-                        <th>
-                            <p class="header">Wydawca</p>
-                            <div class="arrow_container">
-                                <a class="sort" data-bind="click: $root.sort(c_PUBLISHER,false)" href="#">&#9650</a>
-                                <a class="sort" data-bind="click: $root.sort(c_PUBLISHER,true)" href="#">&#9660</a>
-                            </div>
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody  data-bind="foreach: books">
-                    <tr>
-                        <td data-bind="text: id"></td>
-                        <td data-bind="text: title"></td>
-                        <td data-bind="text: title_en"></td>
-                        <td data-bind="text: add_date"></td>
-                        <td data-bind="text: category"></td>
-                        <td data-bind="text: description"></td>
-                        <td data-bind="text: publisher"></td>
-                        <td class="action">
-                            <a href="#" data-bind="click: $root.removeBook">X</a>
-                            <a class="modify" onClick="" href="#">E</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <nav id="navigation" data-bind="foreach: views">
+            <a data-bind="text: title, click: $root.selectedView" href="#"></a>
+        </nav>
+        <div data-bind="with: selectedView">
+            <div data-bind="template: { name: template, data: data }"></div>
         </div>
+            <script id="authors_template" type="text/html">
+                <table id="authors_table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <p class="header">ID</p>
+                                <div class="arrow_container">
+                                    <a class="sort" data-bind="click: sortIdDesc" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: sortIdAsc" href="#">&#9660;</a>
+                                </div>
+                            </th>
+                            <th>
+                                <p class="header">Imie</p>
+                                <div class="arrow_container">
+                                    <a class="sort" data-bind="click: sortNameDesc" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: sortNameAsc" href="#">&#9660;</a>
+                                </div>
+                            </th>
+                            <th>
+                                <p class="header">Nazwisko</p>
+                                <div class="arrow_container">
+                                    <a class="sort" data-bind="click: sortSurnameDesc" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: sortSurnameAsc" href="#">&#9660;</a>
+                                </div>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: authors">
+                        <tr>
+                            <td data-bind="text: id"></td>
+                            <td data-bind="text: name"></td>
+                            <td data-bind="text: surname"></td>
+                            <td class="action">
+                                <a href="#" data-bind="click: $root.removeAuthor">X</a>
+                                <a class="modify" onClick="" href="#">E</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </script>
+            <script id="books_template" type="text/html">
+                <table id="books_table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <p class="header">ID</p>
+                                <div class="arrow_container">
+                                    <a class="sort" data-bind="click: sort(c_ID,false)" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: sort(c_ID,true)" href="#">&#9660;</a>
+                                </div>
+                            </th>
+                            <th>
+                                <p class="header">Tytuł</p>
+                                <div class="arrow_container">
+                                    <a class="sort" data-bind="click: sort(c_TITLE,false)" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: sort(c_TITLE,true)" href="#">&#9660;</a>
+                                </div>
+                            </th>
+                            <th>
+                                <p class="header">Tytuł angielski</p>
+                                <div class="arrow_container">
+                                    <a class="sort" data-bind="click: sort(c_TITLE_EN,false)" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: sort(c_TITLE_EN,true)" href="#">&#9660;</a>
+                                </div>
+                            </th>
+                            <th>
+                                <p class="header">Data dodania</p>
+                                <div class="arrow_container">
+                                    <a class="sort" data-bind="click: sort(c_DATE,false)" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: sort(c_DATE,true)" href="#">&#9660;</a>
+                                </div>
+                            </th>
+                            <th>
+                                <p class="header">Kategoria</p>
+                                <div class="arrow_container">
+                                    <a class="sort" data-bind="click: sort(c_CATEGORY,false)" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: sort(c_CATEGORY,true)" href="#">&#9660;</a>
+                                </div>
+                            </th>
+                            <th>
+                                <p class="header">Opis</p>
+                                <div class="arrow_container">
+                                    <a class="sort" data-bind="click: sort(c_DESCRIPTION,false)" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: sort(c_DESCRIPTION,true)" href="#">&#9660;</a>
+                                </div>
+                            </th>
+                            <th>
+                                <p class="header">Wydawca</p>
+                                <div class="arrow_container">
+                                    <a class="sort" data-bind="click: sort(c_PUBLISHER,false)" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: sort(c_PUBLISHER,true)" href="#">&#9660;</a>
+                                </div>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody  data-bind="foreach: books">
+                        <tr>
+                            <td data-bind="text: id"></td>
+                            <td data-bind="text: title"></td>
+                            <td data-bind="text: title_en"></td>
+                            <td data-bind="text: add_date"></td>
+                            <td data-bind="text: category"></td>
+                            <td data-bind="text: description"></td>
+                            <td data-bind="text: publisher"></td>
+                            <td class="action">
+                                <a href="#" data-bind="click: $root.removeBook">X</a>
+                                <a class="modify" onClick="" href="#">E</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </script>
     </body>
 </html>
