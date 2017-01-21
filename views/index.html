@@ -11,12 +11,13 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/1.4.5/jquery.floatThead.min.js"></script>
         <script type="text/javascript" src="http://knockoutjs.com/downloads/knockout-3.4.1.js"></script>
         <script type="text/javascript" src="knockout-postbox.min.js"></script>
         <script type="text/javascript" src="script.js"></script>
     </head>
     <body>
-        <nav id="navigation">
+        <nav id="navigation" >
             <div id="navigation_bar" class="navigation" data-bind="foreach: views">
                 <a data-bind="text: $data, click: $root.selectedView" href="#"></a>
             </div>
@@ -26,7 +27,8 @@ and open the template in the editor.
                 <a class="add_drop" href="#">+</a>
             </div>
         </nav>
-        <table id="authors_table" data-bind="visible: visible">
+        <div id="authors_table">
+        <table data-bind="visible: visible">
                     <thead>
                         <tr>
                             <th>
@@ -68,12 +70,14 @@ and open the template in the editor.
                             <td data-bind="text: surname"></td>
                             <td class="action">
                                 <a href="#" data-bind="click: $root.removeAuthor">X</a>
-                                <a class="modify" onClick="" href="#">E</a>
+                                <a class="modify" data-bind="click: $root.dropModify" href="#">E</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-        <table id="books_table" data-bind="visible: visible">
+    </div>
+        <div id="books_table">
+        <table data-bind="visible: visible">
                     <thead>
                         <tr>
                             <th>
@@ -154,6 +158,33 @@ and open the template in the editor.
                         </form>
                         </td></tr>
                     </thead>
+                    <div class="modify_bar" data-bind="visible: isModify, with: modifyBook">
+                        
+                            <div class="left">
+                                    <label>Tytuł</label><input type="text" data-bind="value: title"/>
+                                    <label>Tytuł angielski</label><input type="text" data-bind="value: title_en"/>
+                                    <label>ISBN</label><input type="text" data-bind="value: isbn"/>
+                                    <label>Kategoria</label><input type="text" data-bind="value: category"/>
+                                    <label>Wydawca</label><input type="text" data-bind="value: publisher"/><br/>
+                            </div>
+                            <div class="mid">
+                                    <label>Opis</label>
+                                    <textarea data-bind="value: description"> </textarea>
+                                    
+                            </div>
+                            <div id="authors_list">
+                                <label>Autorzy</label>
+                                <select size="5" data-bind="options: $root.authors, 
+                                                optionsText: 's_name',
+                                                optionsValue: 'id',
+                                                selectedOptions: authors" multiple="true"></select>
+                            </div>
+                            <div class="buttons">
+                                <button data-bind="click: $root.modifyClose">Anuluj</button>
+                                <button data-bind="click: $root.modifyUndo">Cofnij</button>
+                                <button data-bind="click: $root.modifyAccept">Zatwierdź</button>
+                            </div>
+                    </div>
                     <tbody  data-bind="foreach: books">
                         <tr>
                             <td data-bind="text: id"></td>
@@ -165,10 +196,11 @@ and open the template in the editor.
                             <td data-bind="text: publisher"></td>
                             <td class="action">
                                 <a href="#" data-bind="click: $root.removeBook">X</a>
-                                <a class="modify" onClick="" href="#">E</a>
+                                <a class="modify" data-bind="click: $root.setModify" href="#">E</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+        </div>
     </body>
 </html>

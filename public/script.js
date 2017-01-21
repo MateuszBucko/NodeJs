@@ -24,17 +24,14 @@ function Author(id, name, surname){
     this.surname = ko.observable(surname);
     this.s_name = name + ' ' + surname;
 }
-
-function header(name,sort_desc,sort_asc,parent){
-    this.name=name;
-    this.sort_desc=parent.sort(sort_desc);
-    this.sort_asc=parent.sort(sort_asc);
-}
-
 var Authors = [];
+
 
 function AuthorsViewModel() {
     var self = this;
+    this.dropModify = function(e){
+        //dropModify(e);
+    };
     this.authors = ko.observableArray().publishOn("authors_list");
     this.visible = ko.observable(false);
     ko.postbox.subscribe("section", function(newValue) {
@@ -160,6 +157,32 @@ function Book(id, title, title_en, isbn, add_date, category, description, publis
 
 function BooksViewModel() {
     var self = this;
+    this.isModify = ko.observable(false);
+    this.modifyBook = ko.observable(); 
+    var tempBook;
+    this.modifyAccept = function(e) {
+        
+    };
+    this.modifyUndo = function(e) {
+        console.log('lol');
+        self.modifyBook(tempBook);
+    };
+    this.modifyClose = function(e) {
+      self.isModify(false);  
+    };
+    this.setModify = function(e) {
+        if(self.isModify())
+            if(e.id()!=self.modifyBook().id());
+            else self.isModify(false);
+        else{
+            self.isModify(true);
+            console.log(e);
+            tempBook = new Book(e);
+            console.log(tempBook.id());
+            self.modifyBook(tempBook);
+        }
+        
+    };
     
     this.visible = ko.observable().subscribeTo("section", function(newValue) {
         return newValue === "Books";
@@ -192,6 +215,9 @@ function BooksViewModel() {
         });
         self.books(mappedData);
     });
+    this.modify = function(){
+        console.log(this);
+    };
     this.add = function(){
         var newbook = new Book(15,this.title(),
                 this.title_en(),
@@ -265,10 +291,8 @@ function BooksViewModel() {
                         return a.isbn() - b.isbn();
                     break;
                 case c_DATE :
-                    if (desc)
-                        return b.add_date() - a.add_date();
-                    else
-                        return a.add_date() - b.add_date();
+                    z = a.add_date();
+                    x = b.add_date();
                     break;
             }
             if (desc)
@@ -288,7 +312,6 @@ function ViewsModel() {
     this.selectedView = ko.observable().publishOn("section");
 }
 var active;
-
 $(document).ready(function () {
     
    $(".add_bar").slideUp();
@@ -307,5 +330,5 @@ $(document).ready(function () {
    $(".add_drop").click(function(e){
        $(".add_bar").slideToggle();
    });
-
+   
 });

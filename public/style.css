@@ -34,6 +34,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  display: table;
 }
 
 tbody {
@@ -53,7 +54,6 @@ thead tr.add_bar {
     width: 100%;
     border-top: 1px solid black;
     background: #77797A;
-
 }
 
 table .add_bar form {
@@ -91,7 +91,7 @@ thead{
     margin-top: 35px;
     min-width: 1280px;
     background: #77797A;
-    border-bottom: 1px solid #001028;    
+    border-bottom: 1px solid #001028;
 }
 
 table .id {
@@ -177,4 +177,73 @@ nav {
 
 #navigation {
     z-index: 99 !important;
+     
+    top: 0px; 
+    margin-top: 10px;
+}
+
+.modify_bar {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    width: 790px;
+    margin-left: -395px;
+    padding: 25px;
+    background: #C2C4C7;
+    border-radius: 10px;
+    border: 1px solid #444648;
+    -webkit-box-shadow: 0 5px 10px 5px rgba(0,0,0,0.5);
+    box-shadow: 0 5px 10px 5px rgba(0,0,0,0.5);
+}
+
+.modify_bar div {
+    display: block;
+    float: left;
+    margin-right: 20px;
+    height: 310px;
+}
+
+.modify_bar .left {
+    width: 200px;
+}
+
+.modify_bar label {
+    width: 100%;
+    float: none;
+    display: block;
+    margin: 10px 0;
+}
+
+.modify_bar .left input {
+    height: 20px;
+    width: 100%;
+}
+
+.modify_bar .mid{
+    width: 300px;
+}
+
+.modify_bar .mid textarea{
+    width: 100%;
+    height: 264px;
+    resize: none;
+    margin: 0;
+}
+
+.modify_bar #authors_list {
+    width: 250px;
+    margin-right: 0px;
+}
+
+.modify_bar #authors_list select{
+    height: 270px;
+    width: 100%;
+}
+
+.modify_bar .buttons {
+    width: 100%;
+    display: block;
+    padding: 20px;
+    text-align: center;
+    height: 100%;
 }
