@@ -38,6 +38,7 @@ table {
 
 tbody {
     margin-top: 60px;
+    background: #F3F6FA;
 }
 
 table tr:nth-child(2n-1) {

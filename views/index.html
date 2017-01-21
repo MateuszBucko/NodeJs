@@ -9,59 +9,51 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../public/style.css">
+        <link rel="stylesheet" href="style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="http://knockoutjs.com/downloads/knockout-3.4.1.js"></script>
         <script type="text/javascript" src="knockout-postbox.min.js"></script>
-        <script src="../script.js"></script>
+        <script type="text/javascript" src="script.js"></script>
     </head>
     <body>
         <nav id="navigation">
             <div id="navigation_bar" class="navigation" data-bind="foreach: views">
-                <a data-bind="text: title, click: $root.selectedView" href="#"></a>
+                <a data-bind="text: $data, click: $root.selectedView" href="#"></a>
             </div>
             <div id="action_bar" class="navigation">
                 <input type="text" />
                 <a class="search" href="#">Szukaj</a>
-                <a class="add" href="#">+</a>
+                <a class="add_drop" href="#">+</a>
             </div>
         </nav>
-        <div data-bind="with: selectedView">
-            <div data-bind="template: { name: template, data: data }">
-                
-            </div>
-        </div>
-            <script id="authors_template" type="text/html">
-                
-                <table id="authors_table">
+        <table id="authors_table" data-bind="visible: visible">
                     <thead>
                         <tr>
                             <th>
                                 <p class="header">ID</p>
                                 <div class="arrow_container">
-                                    <a class="sort" data-bind="click: sortIdDesc" href="#">&#9650;</a>
-                                    <a class="sort" data-bind="click: sortIdAsc" href="#">&#9660;</a>
+                                    <a class="sort" data-bind="click: $root.sortIdDesc" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: $root.sortIdAsc" href="#">&#9660;</a>
                                 </div>
                             </th>
                             <th>
                                 <p class="header">Imie</p>
                                 <div class="arrow_container">
-                                    <a class="sort" data-bind="click: sortNameDesc" href="#">&#9650;</a>
-                                    <a class="sort" data-bind="click: sortNameAsc" href="#">&#9660;</a>
+                                    <a class="sort" data-bind="click: $root.sortNameDesc" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: $root.sortNameAsc" href="#">&#9660;</a>
                                 </div>
                             </th>
                             <th>
                                 <p class="header">Nazwisko</p>
                                 <div class="arrow_container">
-                                    <a class="sort" data-bind="click: sortSurnameDesc" href="#">&#9650;</a>
-                                    <a class="sort" data-bind="click: sortSurnameAsc" href="#">&#9660;</a>
+                                    <a class="sort" data-bind="click: $root.sortSurnameDesc" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: $root.sortSurnameAsc" href="#">&#9660;</a>
                                 </div>
                             </th>
                             <th></th>
                         </tr>
                         <tr class="add_bar"><td colspan=7>
-                        <form data-bind="submit: add">
-                                    <p data-bind="text: nextid"></p>
+                        <form data-bind="submit: $root.add">
                                     Imię: <input type="text" data-bind="value: nameIn" />
                                     Nazwisko: <input type="text" data-bind="value: surnameIn"/>
                                     <button type="submit">Dodaj</button>
@@ -75,15 +67,13 @@ and open the template in the editor.
                             <td data-bind="text: name"></td>
                             <td data-bind="text: surname"></td>
                             <td class="action">
-                                <a href="#" data-bind="click: removeAuthor">X</a>
+                                <a href="#" data-bind="click: $root.removeAuthor">X</a>
                                 <a class="modify" onClick="" href="#">E</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            </script>
-            <script id="books_template" type="text/html">
-                <table id="books_table">
+        <table id="books_table" data-bind="visible: visible">
                     <thead>
                         <tr>
                             <th>
@@ -150,12 +140,15 @@ and open the template in the editor.
                             </div>
                             <div>
                                     <p>Opis</p>
-                                    <input type="textarea" data-bind="value: description"/>
+                                    <textarea rows="4" colls="50" data-bind="value: description"> </textarea>
                                     
                             </div>
-                            <div id="authors_list" data-bind="visible: isVisible">
+                            <div id="authors_list">
                                 <p>Autorzy</p>
-                                <select data-bind="options: authors" size="5" multiple="true"></select>
+                                <select size="5" data-bind="options: authors, 
+                                                optionsText: 's_name',
+                                                optionsValue: 'id',
+                                                selectedOptions: selectedAuthors" multiple="true"></select>
                                 <button type="submit">Dodaj</button>
                             </div>
                         </form>
@@ -171,12 +164,11 @@ and open the template in the editor.
                             <td data-bind="text: category"></td>
                             <td data-bind="text: publisher"></td>
                             <td class="action">
-                                <a href="#" data-bind="click: removeBook">X</a>
+                                <a href="#" data-bind="click: $root.removeBook">X</a>
                                 <a class="modify" onClick="" href="#">E</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            </script>
     </body>
 </html>
