@@ -34,9 +34,11 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
-  background: #F3F6FA;
 }
 
+tbody {
+    margin-top: 60px;
+}
 
 table tr:nth-child(2n-1) {
   background: #C2C4C7;
@@ -46,16 +48,49 @@ table tr:hover {
   background: #D2DFEA
 }
 
+thead tr.add_bar {
+    width: 100%;
+    border-top: 1px solid black;
+    background: #77797A;
+
+}
+
+table .add_bar form {
+    margin:0px;
+    padding:0px;
+}
+
+table .add_bar form div{
+    margin:0px;
+    padding:0px;
+    display: block;
+    float: left;
+}
+
+table .add_bar td form * {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-right: 20px;
+}
+
+
 table th {
   padding: 5px 0px;
   height: 40px;
   color: #FFFFFF;
-  border-bottom: 1px solid #C1CED9;     
   font-weight: normal;
-  background: #77797A;
   padding-left: 40px;
   font-size: 1.2em;
   text-align: center;
+  background: #77797A;
+}
+
+thead{  
+    border-top: 2px solid black;
+    margin-top: 35px;
+    min-width: 1280px;
+    background: #77797A;
+    border-bottom: 1px solid #001028;    
 }
 
 table .id {
@@ -91,4 +126,54 @@ p.header {
 
 .sort {
     font-size: 10px;
+}
+
+nav {
+    padding-left: 10px;
+}
+
+#navigation_bar a {
+    display: inline-block;
+    padding: 2px 20px;
+    background-color: #444648;
+    margin: 0px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border: 2px solid #001028;
+    border-bottom: 0px;
+    color: #C1CED9;
+   
+}
+#navigation_bar a.active {
+    background-color: #77797A;
+    margin-bottom: -4px;
+    padding-bottom: 4px;
+}
+
+.navigation {
+    display: inline-block;
+}
+
+#action_bar {
+    float: right;
+    background-color: #77797A;
+    padding: 2px 20px;
+    padding-bottom: 4px;
+    margin-bottom: -4px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border: 2px solid #001028;
+    border-bottom: 0px;
+    margin-right: 10px;
+}
+#action_bar a {
+    padding: 0px 10px;
+}
+
+#action_bar input {
+    height: 16px;
+}
+
+#navigation {
+    z-index: 99 !important;
 }

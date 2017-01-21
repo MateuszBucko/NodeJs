@@ -12,6 +12,7 @@ and open the template in the editor.
         <link rel="stylesheet" href="style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="http://knockoutjs.com/downloads/knockout-3.4.1.js"></script>
+        <script type="text/javascript" src="knockout-postbox.min.js"></script>
         <script src="../script.js"></script>
     </head>
     <body>
@@ -107,6 +108,13 @@ and open the template in the editor.
                                 </div>
                             </th>
                             <th>
+                                <p class="header">ISBN</p>
+                                <div class="arrow_container">
+                                    <a class="sort" data-bind="click: sort(c_ISBN,false)" href="#">&#9650;</a>
+                                    <a class="sort" data-bind="click: sort(c_ISBN,true)" href="#">&#9660;</a>
+                                </div>
+                            </th>
+                            <th>
                                 <p class="header">Data dodania</p>
                                 <div class="arrow_container">
                                     <a class="sort" data-bind="click: sort(c_DATE,false)" href="#">&#9650;</a>
@@ -129,17 +137,27 @@ and open the template in the editor.
                             </th>
                             <th></th>
                         </tr>
-                        <tr class="add_bar"><td colspan=7>
+                        <tr class="add_bar"><td colspan=8>
                         <form data-bind="submit: add">
-                                    <p data-bind="text: nextid"></p>
-                                    <input type="text" data-bind="value: title"/>
-                                    <input type="text" data-bind="value: title_en"/>
-                                    <input type="text" data-bind="value: isbn"/>
-                                    <input type="text" data-bind="value: add_date"/>
-                                    <input type="text" data-bind="value: category"/>
-                                    <input type="text" data-bind="value: publisher"/>
+                            <div>
+                                    <p>Tytuł</p><input type="text" data-bind="value: title"/>
+                                    <p>Tytuł angielski</p><input type="text" data-bind="value: title_en"/>
+                                    <p>ISBN</p><input type="text" data-bind="value: isbn"/>
+                            </div>
+                            <div>
+                                    <p>Kategoria</p><input type="text" data-bind="value: category"/>
+                                    <p>Wydawca</p><input type="text" data-bind="value: publisher"/><br/>
+                            </div>
+                            <div>
+                                    <p>Opis</p>
                                     <input type="textarea" data-bind="value: description"/>
-                                    <button type="submit">Dodaj</button>
+                                    
+                            </div>
+                            <div id="authors_list" data-bind="visible: isVisible">
+                                <p>Autorzy</p>
+                                <select data-bind="options: authors" size="5" multiple="true"></select>
+                                <button type="submit">Dodaj</button>
+                            </div>
                         </form>
                         </td></tr>
                     </thead>
@@ -148,6 +166,7 @@ and open the template in the editor.
                             <td data-bind="text: id"></td>
                             <td data-bind="text: title"></td>
                             <td data-bind="text: title_en"></td>
+                            <td data-bind="text: isbn"></td>
                             <td data-bind="text: add_date"></td>
                             <td data-bind="text: category"></td>
                             <td data-bind="text: publisher"></td>
