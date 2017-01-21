@@ -9,7 +9,7 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="../public/style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="http://knockoutjs.com/downloads/knockout-3.4.1.js"></script>
         <script src="../script.js"></script>
@@ -61,8 +61,8 @@ and open the template in the editor.
                         <tr class="add_bar"><td colspan=7>
                         <form data-bind="submit: add">
                                     <p data-bind="text: nextid"></p>
-                                    <input type="text" data-bind="value: nameIn" />
-                                    <input type="text" data-bind="value: surnameIn"/>
+                                    Imię: <input type="text" data-bind="value: nameIn" />
+                                    Nazwisko: <input type="text" data-bind="value: surnameIn"/>
                                     <button type="submit">Dodaj</button>
                         </form>
                         </td></tr>
