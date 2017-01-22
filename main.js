@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var cors = require('cors')
-var port = 8080;
+var cors = require('cors');
+var port = 8081;
 var fs = require("fs");
 var jsonBooks = fs.readFileSync("books.json");
 var jsonAuthors = fs.readFileSync("authors.json");
@@ -82,9 +82,8 @@ app.get('/authors/:id', function (request, response) {
         response.json(author);
     }
 });
-// pobranie wszystkich autorów
 app.get('/authors',function(request,response){
-	console.log('Pobieranie autorów - GET');
+	console.log('Pobieranie auto - GET');
 	response.json(authors);
 });
 
@@ -103,17 +102,17 @@ app.get('/books/:id', function (request, response) {
 
 // pobranie wszystkich ksiazek
 app.get('/books',function(request,response){
-	console.log('Pobieranie ksi¹¿ek - GET');
+	console.log('Pobieranie ksiazek - GET');
 	response.json(books);
 });
 
 
 //operacje POST
 
-// dodanie ksi¹¿ki
+// dodanie ksa
 app.post('/books', function(request,response){
 	var book = request.body;
-	console.log("Wstawianie ksi¹¿ki z zapytania: " + JSON.stringify(book));
+	console.log("Wstawianie ksiazki z zapytania: " + JSON.stringify(book));
 	book.id = bookId++;
 	books.push(book);
 	response.send(book);
@@ -131,14 +130,14 @@ app.post('/authors', function(request,response){
 
 //operacje PUT
 
-//update ksia¿ki
+//update ksiazki
 app.put('/books/:id',function(request,response){
 	var book = request.body;
-	console.log("Uaktualnianie ksi¹¿ki z zapytania: " + JSON.stringify(book));
+	console.log("Uaktualnianie ksiazki z zapytania: " + JSON.stringify(book));
 	var currentBook = findBook(parseInt(request.params.id,10));
 	if(currentBook == null){
-		//zrzucamy b³¹d
-		reponse.send(404);
+		//zrzucamy blad
+		response.send(404);
 	}
 	else{
 		currentBook.isbn = book.isbn;
@@ -150,14 +149,16 @@ app.put('/books/:id',function(request,response){
 		currentBook.description = book.description;
 		currentBook.add_date = book.add_date;
 		currentBook.authors = book.authors;
-		console.log("Zakoñczono uaktualnianie ksi¹¿ki");
+		console.log("Zakonczono uaktualnianie ksiazki");
+                response.send(currentBook);
+                
 	}
 });
 
 //update autora
 app.put('/authors/:id',function(request,response){
 	var author = request.body;
-	console.log("Uaktualnianie ksi¹¿ki z zapytania: " + JSON.stringify(author));
+	console.log("Uaktualnianie ksiazki z zapytania: " + JSON.stringify(author));
 	var currentAuthor = findAuthor(parseInt(request.params.id,10));
 	if (currentAuthor === null) {
         response.send(404);
@@ -165,23 +166,24 @@ app.put('/authors/:id',function(request,response){
 	else{
 		currentAuthor.name = author.name;
 		currentAuthor.surname = author.surname;
-		console.log("Zakoñczono uaktualnianie autora");
+		console.log("Zakonczono uaktualnianie autora");
+                response.send(currentAuthor);
 	}
 });
 
 
 //operacje DELETE
 
-//usuwanie ksi¹¿ki
+//usuwanie ksiazki
 app.delete('/books/:id',function(request,response){
-	console.log("Próba usuniêcia ksi¹¿ki z id: " + parseInt(request.params.id, 10));
+	console.log("P ksiazki z id: " + parseInt(request.params.id, 10));
 	var book = findBook(parseInt(request.params.id, 10));
     if (book === null) {
-        console.log('Nie mo¿na znaleŸæ tej ksi¹¿ki');
+        console.log('Nieznalezc tej ksiazki');
         response.send(404);
     }
     else {
-        console.log('Usuwanie ksi¹¿ki o id: ' + request.params.id);
+        console.log('Usuwanie ksiazki o id: ' + request.params.id);
         removeBook(parseInt(request.params.id, 10));
         response.send(book);
     }
@@ -189,10 +191,10 @@ app.delete('/books/:id',function(request,response){
 
 //usuwnaie autora
 app.delete('/authors/:id',function(request,response){
-	console.log("Próba usuniêcia autora z id: " + parseInt(request.params.id, 10));
+	console.log("usuniecia autora z id: " + parseInt(request.params.id, 10));
 	var author = findAuthor(parseInt(request.params.id,10));
 	if(author === null){
-		console.log('Nie mo¿na znaleŸæ tego autora');
+		console.log('Nie mozna znalelc tego autora');
 		response.send(404);
 	}
 	else{

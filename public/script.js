@@ -1,4 +1,4 @@
-var QUERY_URL = 'http://localhost:8080/';
+var QUERY_URL = 'http://localhost:8081/';
 var view = 0;
 var books;
 var authors;
@@ -26,13 +26,99 @@ function Author(id, name, surname){
 }
 var Authors = [];
 
+Array.prototype.diff = function(a) {
+    return this.filter(function(i) {return a.indexOf(i) < 0;});
+};
 
 function AuthorsViewModel() {
     var self = this;
-    this.dropModify = function(e){
-        //dropModify(e);
+    this.isModify = ko.observable(false);
+    this.modifyAuthor = ko.observable(); 
+    this.modifyOriginal = ko.observable();
+    
+    this.authorBooks = ko.observableArray();
+    this.authorBooksOrg = ko.observableArray();
+    this.populateSelected = function () {
+        this.authorBooks.removeAll();
+        this.authorBooksOrg.removeAll();
+        for(var i=0;i<self.books().length;i++){
+            for(var j=0;j<self.books()[i].authors().length;j++){
+                if(self.books()[i].authors()[j]==self.modifyAuthor().id){
+                    self.authorBooks.push(self.books()[i].id());
+                    self.authorBooksOrg.push(self.books()[i].id());
+                }
+            }
+        }
     };
+    
+    this.modifyAccept = function(e) {
+        var id =  self.modifyAuthor().id;
+        $.ajax({
+            url: QUERY_URL + 'authors/' + id,
+            type: 'PUT',
+            data: ko.toJSON(self.modifyAuthor),
+            contentType: "application/json",
+            success: function (result) {
+                self.modifyOriginal.name(result.name);
+                self.modifyOriginal.surname(result.surname);
+                self.modifyAuthor();
+                self.modifyClose();
+                var diff = self.authorBooks().diff(self.authorBooksOrg());
+                console.log("diff");
+                
+                diff = diff.concat(self.authorBooksOrg().diff(self.authorBooks()));
+                
+                var lookup = {};
+                for (var i = 0, len = self.books().length; i < len; i++) {
+                    lookup[self.books()[i].id()] = self.books()[i];
+                }
+                console.log(diff);
+                for(var i=0;i<diff.length;i++){
+                    if(lookup[diff[i]].authors().find(function(idd,val){
+                       return idd==id;
+                    })==null)
+                        lookup[diff[i]].authors().push(id);
+                    else {
+                        lookup[diff[i]].authors().splice(lookup[diff[i]].authors().indexOf(id),1);
+                    }
+                    $.ajax({url: QUERY_URL + 'books/' + lookup[diff[i]].id(),
+                            type: 'PUT',
+                            data: ko.toJSON(lookup[diff[i]]),
+                            contentType: "application/json",
+                            success: function (result) { }
+                    });
+                }
+                
+            }
+        });
+    };
+    
+    this.modifyUndo = function(e) {
+        self.modifyAuthor(ko.toJS(self.modifyOriginal));
+    };
+    this.modifyClose = function(e) {
+      self.isModify(false);  
+    };
+    this.setModify = function(e) {
+        if(self.isModify())
+            if(e.id()!=self.modifyAuthor.id){
+                self.modifyOriginal = e;
+                self.modifyAuthor(ko.observable(ko.toJS(e))());
+                self.populateSelected();
+            }
+            else self.isModify(false);
+        else{
+            self.isModify(true);
+            self.modifyOriginal = e;
+            self.modifyAuthor(ko.observable(ko.toJS(e))());
+            self.populateSelected();
+        }
+    };
+        
+    
     this.authors = ko.observableArray().publishOn("authors_list");
+    this.books = ko.observable("").subscribeTo("books_list");
+    this.selectedBooks = ko.observableArray();
     this.visible = ko.observable(false);
     ko.postbox.subscribe("section", function(newValue) {
         console.log(newValue);
@@ -159,27 +245,46 @@ function BooksViewModel() {
     var self = this;
     this.isModify = ko.observable(false);
     this.modifyBook = ko.observable(); 
-    var tempBook;
+    this.modifyOriginal = ko.observable();
     this.modifyAccept = function(e) {
-        
+        console.log(self.modifyBook().id);
+        $.ajax({
+            url: QUERY_URL + 'books/' + self.modifyBook().id,
+            type: 'PUT',
+            data: ko.toJSON(self.modifyBook),
+            contentType: "application/json",
+            success: function (result) {
+                console.log(result);
+                self.modifyOriginal.title(result.title);
+                self.modifyOriginal.title_en(result.title_en);
+                self.modifyOriginal.isbn(result.isbn);
+                self.modifyOriginal.publisher(result.publisher);
+                self.modifyOriginal.category(result.category);
+                self.modifyOriginal.description(result.description);
+                self.modifyOriginal.add_date(result.add_date);
+                self.modifyOriginal.authors(result.authors);
+                self.modifyBook();
+                self.modifyClose();
+            }
+        });
     };
     this.modifyUndo = function(e) {
-        console.log('lol');
-        self.modifyBook(tempBook);
+        self.modifyBook(ko.toJS(self.modifyOriginal));
     };
     this.modifyClose = function(e) {
       self.isModify(false);  
     };
     this.setModify = function(e) {
         if(self.isModify())
-            if(e.id()!=self.modifyBook().id());
+            if(e.id()!=self.modifyBook.id){
+                self.modifyOriginal = e;
+                self.modifyBook(ko.observable(ko.toJS(e))());
+            }
             else self.isModify(false);
         else{
             self.isModify(true);
-            console.log(e);
-            tempBook = new Book(e);
-            console.log(tempBook.id());
-            self.modifyBook(tempBook);
+            self.modifyOriginal = e;
+            self.modifyBook(ko.observable(ko.toJS(e))());
         }
         
     };
@@ -193,6 +298,7 @@ function BooksViewModel() {
     this.title_en = ko.observable("");
     this.isbn = ko.observable("");
     this.authors = ko.observable("").subscribeTo("authors_list");
+    this.books = ko.observableArray().publishOn("books_list");
     var today = new Date();
     var today_s = today.getFullYear()+"-"+today.getMonth()+1+"-"+today.getDate();
     this.add_date = ko.observable(today_s);
