@@ -8,9 +8,9 @@ and open the template in the editor.
     Author     : Łukasz
 */
 
+
 body {
   color: #001028;
-  background: #FFFFFF; 
   font-family: Arial, sans-serif; 
   font-size: 12px; 
   font-family: Arial;
@@ -27,7 +27,7 @@ header {
 a {
   text-decoration: none;
   font-size:24px;
-  color: red;
+  color: #EE1111;
 }
 
 table {
@@ -53,27 +53,52 @@ table tr:hover {
 thead tr.add_bar {
     width: 100%;
     border-top: 1px solid black;
-    background: #77797A;
+    background: #555555;
 }
 
 table .add_bar form {
-    margin:0px;
-    padding:0px;
+    padding: 0px;
+    display: inline-block;
+    text-align: left;
 }
-
+table .add_bar form #authors_list{
+    margin-right: 0px;
+}
 table .add_bar form div{
     margin:0px;
     padding:0px;
     display: block;
+    height: 100%;
     float: left;
-}
-
-table .add_bar td form * {
-    padding-top: 0px;
-    padding-bottom: 0px;
     margin-right: 20px;
+    margin-top: 0px;
 }
 
+table .add_bar label {
+    font-size: 14px;
+    margin-top: 0px;
+}
+
+table .add_bar input {
+    margin-bottom: 10px;
+    width: 230px;
+}
+
+table .add_bar select {
+    margin: 0;
+    height: 145px;
+    width: 240px;
+}
+#authors_button {
+    margin-top: 10px;
+    margin-right: 0px;
+}
+table .add_bar textarea {
+    width: 420px;
+    height: 140px;
+    resize: none;
+    margin: 0;
+}
 
 table th {
   padding: 5px 0px;
@@ -83,15 +108,15 @@ table th {
   padding-left: 40px;
   font-size: 1.2em;
   text-align: center;
-  background: #77797A;
+  background: #444444;
 }
 
 thead{  
     border-top: 2px solid black;
     margin-top: 35px;
     min-width: 1280px;
-    background: #77797A;
-    border-bottom: 1px solid #001028;
+    background: #444444;
+    border-bottom: 1px solid #000000;
 }
 
 table .id {
@@ -136,19 +161,42 @@ nav {
 #navigation_bar a {
     display: inline-block;
     padding: 2px 20px;
-    background-color: #444648;
+    background-color: #222222;
     margin: 0px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border: 2px solid #001028;
-    border-bottom: 0px;
-    color: #C1CED9;
-   
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 2px solid #000000;
+    border-bottom: 0px;   
+    color: #CC2222;
 }
+#action_bar label{
+    width: auto;
+    display: inline-block;
+    float: left;
+    margin: 0;
+    vertical-align: bottom;
+    margin-top: 8px;
+    margin-right: 10px;
+}
+#seatchform {
+    display: inline-block;
+}
+#action_bar label input{
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  margin:0;
+  vertical-align: bottom;
+  position: relative;
+  top: -1px;
+  margin-left: 4px;
+}
+
 #navigation_bar a.active {
-    background-color: #77797A;
+    background-color: #444444;
     margin-bottom: -4px;
     padding-bottom: 4px;
+    color: #FF2222;
 }
 
 .navigation {
@@ -157,22 +205,28 @@ nav {
 
 #action_bar {
     float: right;
-    background-color: #77797A;
+    background-color: #444444;
     padding: 2px 20px;
     padding-bottom: 4px;
     margin-bottom: -4px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border: 2px solid #001028;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 2px solid #000000;
     border-bottom: 0px;
     margin-right: 10px;
 }
 #action_bar a {
     padding: 0px 10px;
+    color: #FF4444;
+}
+#action_bar a:hover {
+    padding: 0px 10px;
+    color: #F3F6FA;
 }
 
 #action_bar input {
     height: 16px;
+    vertical-align: text-bottom;;
 }
 
 #navigation {
@@ -190,7 +244,7 @@ nav {
     height: 340px;
     margin-left: -395px;
     padding: 25px;
-    background: #C2C4C7;
+    background: #444444;
     border-radius: 10px;
     border: 1px solid #444648;
     -webkit-box-shadow: 0 5px 10px 5px rgba(0,0,0,0.5);
@@ -213,11 +267,12 @@ nav {
     width: 200px;
 }
 
-.modify_bar label {
+label {
     width: 100%;
     float: none;
     display: block;
     margin: 10px 0;
+    color: #DDDDDD;
 }
 
 .modify_bar .left input {
@@ -246,11 +301,11 @@ nav {
     width: 100%;
 }
 
-.modify_bar .buttons {
+.buttons {
     width: 100%;
     height: 60px;
     padding-top: 10px;
     display: block;
-    
+    margin-right: 0;
     text-align: center;
 }

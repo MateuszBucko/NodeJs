@@ -9,12 +9,12 @@ and open the template in the editor.
 	<title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../public/style.css">
+        <link rel="stylesheet" href="style.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/1.4.5/jquery.floatThead.min.js"></script>
         <script type="text/javascript" src="http://knockoutjs.com/downloads/knockout-3.4.1.js"></script>
-        <script type="text/javascript" src="../public/knockout-postbox.min.js"></script>
-        <script type="text/javascript" src="../public/script.js"></script>
+        <script type="text/javascript" src="knockout-postbox.min.js"></script>
+        <script type="text/javascript" src="script.js"></script>
     </head>
     <body>
         <nav id="navigation" >
@@ -22,7 +22,10 @@ and open the template in the editor.
                 <a data-bind="text: $data, click: $root.selectedView" href="#"></a>
             </div>
             <div id="action_bar" class="navigation">
-                <input type="text" id="keyword"/>
+                <label>Automatyczne wyszukiwanie<input type="checkbox" data-bind="checked: liveSearch"></label>
+                <form data-bind="submit: $root.search" id="seatchform">
+                    <input type="text" data-bind="textInput: keyword" id="keyword"/>
+                </form>
                 <a class="search" data-bind="click: $root.search " href="#">Szukaj</a>
                 <a class="search" data-bind="click: $root.clear " href="#">Czyść</a>
                 <a class="add_drop" href="#">+</a>
@@ -57,9 +60,20 @@ and open the template in the editor.
                         </tr>
                         <tr class="add_bar"><td colspan=7>
                         <form data-bind="submit: $root.add">
-                                    Imię: <input type="text" data-bind="value: nameIn" />
-                                    Nazwisko: <input type="text" data-bind="value: surnameIn"/>
-                                    <button type="submit">Dodaj</button>
+                            <div>
+                                    <label>Imię:</label> <input type="text" data-bind="value: nameIn" />
+                                    <label>Nazwisko:</label> <input type="text" data-bind="value: surnameIn"/>
+                            </div>
+                            <div id="authors_list">
+                            <label>Książki</label>
+                            <select size="5" data-bind="options: $root.books, 
+                                            optionsText: 'title',
+                                            optionsValue: 'id',
+                                            selectedOptions: $root.authorBooks" multiple="true"></select>
+                            </div>
+                            <div class="buttons" id="authors_button">
+                                <button type="submit" style="margin-bottom: 10px;">Dodaj</button>
+                            </div>
                         </form>
                         </td></tr>
                     </thead>
@@ -153,25 +167,28 @@ and open the template in the editor.
                         <tr class="add_bar"><td colspan=8>
                         <form data-bind="submit: add">
                             <div>
-                                    <p>Tytuł</p><input type="text" data-bind="value: title"/>
-                                    <p>Tytuł angielski</p><input type="text" data-bind="value: title_en"/>
-                                    <p>ISBN</p><input type="text" data-bind="value: isbn"/>
+                                    <label>Tytuł</label><input type="text" data-bind="value: title"/>
+                                    <label>Tytuł angielski</label><input type="text" data-bind="value: title_en"/>
+                                    <label>ISBN</label><input type="text" data-bind="value: isbn"/>
                             </div>
                             <div>
-                                    <p>Kategoria</p><input type="text" data-bind="value: category"/>
-                                    <p>Wydawca</p><input type="text" data-bind="value: publisher"/><br/>
+                                    <label>Kategoria</label><input type="text" data-bind="value: category"/>
+                                    <label>Wydawca</label><input type="text" data-bind="value: publisher"/><br/>
                             </div>
                             <div>
-                                    <p>Opis</p>
+                                    <label>Opis</label>
                                     <textarea rows="4" colls="50" data-bind="value: description"> </textarea>
                                     
                             </div>
                             <div id="authors_list">
-                                <p>Autorzy</p>
+                                <label>Autorzy</label>
                                 <select size="5" data-bind="options: authors, 
                                                 optionsText: 's_name',
                                                 optionsValue: 'id',
                                                 selectedOptions: selectedAuthors" multiple="true"></select>
+                                
+                            </div>
+                            <div class="buttons">
                                 <button type="submit">Dodaj</button>
                             </div>
                         </form>

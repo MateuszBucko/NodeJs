@@ -36,14 +36,6 @@ Array.prototype.diff = function (a) {
     });
 };
 
-
-function SearchViewModel() {
-
-    this.searchText = ko.observable("keyword");
-    this.search = function () {
-
-    };
-}
 function AuthorsViewModel() {
     var self = this;
     this.isModify = ko.observable(false);
@@ -79,7 +71,7 @@ function AuthorsViewModel() {
                 self.modifyClose();
                 var diff = self.authorBooks().diff(self.authorBooksOrg());
                 console.log("diff");
-
+                self.authorBooks([]);
                 diff = diff.concat(self.authorBooksOrg().diff(self.authorBooks()));
 
                 var lookup = {};
@@ -99,19 +91,21 @@ function AuthorsViewModel() {
                         type: 'PUT',
                         data: ko.toJSON(lookup[diff[i]]),
                         contentType: "application/json",
-                        success: function (result) { }
+                        success: function (result) {}
                     });
                 }
-
+                books(lookup);
             }
         });
     };
 
     this.modifyUndo = function (e) {
         self.modifyAuthor(ko.toJS(self.modifyOriginal));
+        self.authorBooks(ko.toJS(self.authorBooksOrg));
     };
     this.modifyClose = function (e) {
         self.isModify(false);
+        self.authorBooks([]);
     };
     this.setModify = function (e) {
         if (self.isModify())
@@ -136,6 +130,7 @@ function AuthorsViewModel() {
     this.visible = ko.observable(false);
     ko.postbox.subscribe("section", function (newValue) {
         console.log(newValue);
+        booksViewModel.modifyClose;
         this.visible(newValue === "Authors");
     }, this);
     self.nameIn = ko.observable("");
@@ -168,7 +163,9 @@ function AuthorsViewModel() {
     };
 
     this.removeAuthorFromTable = function (author) {
+        console.log(author);
         self.authors.remove(author);
+        console.log(self.authors());
     };
 
     this.addAutorEx = function (author) {
@@ -205,8 +202,6 @@ function AuthorsViewModel() {
             }
 
         });
-
-
     };
 
 
@@ -248,6 +243,30 @@ function AuthorsViewModel() {
                 contentType: "application/json",
                 success: function (result) {
                     self.authors.push(new Author(result.id, result.name, result.surname));
+                    var id = result.id;
+                    var lookup = {};
+                    for (var i = 0, len = self.books().length; i < len; i++) {
+                        lookup[self.books()[i].id()] = self.books()[i];
+                    }
+                    var diff = self.authorBooks();
+                    console.log(self.selectedBooks);
+                    for (var i = 0; i < diff.length; i++) {
+                        if (lookup[diff[i]].authors().find(function (idd, val) {
+                            return idd == id;
+                        }) == null)
+                            lookup[diff[i]].authors().push(id);
+                        else {
+                            lookup[diff[i]].authors().splice(lookup[diff[i]].authors().indexOf(id), 1);
+                        }
+                        $.ajax({url: QUERY_URL + 'books/' + lookup[diff[i]].id(),
+                            type: 'PUT',
+                            data: ko.toJSON(lookup[diff[i]]),
+                            contentType: "application/json",
+                            success: function (result) {
+                            
+                            }
+                        });
+                    }
                 }
             });
         } else {
@@ -351,6 +370,7 @@ function BooksViewModel() {
     };
 
     this.visible = ko.observable().subscribeTo("section", function (newValue) {
+        authorsViewModel.modifyClose;
         return newValue === "Books";
     });
     this.selectedAuthors = ko.observableArray([]);
@@ -431,9 +451,6 @@ function BooksViewModel() {
     };
 
     this.clearBooksFilter = function () {
-        
-       
-
         $.getJSON(QUERY_URL + 'books', {}, function (data) {
             var mappedData = $.map(data, function (item) {
 
@@ -449,7 +466,7 @@ function BooksViewModel() {
             });
             self.books(mappedData);
         });
-    }
+    };
 
     this.sort = function (column, desc) {
         self.books.sort(function (a, b) {
@@ -502,14 +519,58 @@ function BooksViewModel() {
 
 }
 
+function HowEqual(a, c){
+   var equality = 0;
+   for(var i=0;i<c.length;i++)
+       if(a.charAt(i)===c.charAt(i))
+           equality++;
+       else return equality;
+   return equality;
+}
+
 function ViewsModel() {
     var self = this;
     this.views = ko.observableArray([
         'Books',
         'Authors'
     ]);
+    
     this.selectedView = ko.observable().publishOn("section");
+    this.liveSearch = ko.observable(false);
+    this.books = ko.observableArray("").subscribeTo("books_list");
+    this.authors = ko.observableArray("").subscribeTo("authors_list");
+    var cleard = false;
+    var removalAuthor = [];
+    var removalBook = [];
+    this.keyword = ko.observable("");
+    this.keyword.subscribe(function(key){
+        search(key);
+    });
+    function clearAuthors() {
+        authorsViewModel.clearAuthorFilter();
+    }
 
+    function search(keyword) {
+        console.log(self.liveSearch());
+        if(self.liveSearch()){
+            if (keyword !== null && keyword.length > 0) {
+                if (self.selectedView() === "Authors") {
+                   authorsViewModel.authors.sort(function(a,b){
+                        return HowEqual(b.surname().toUpperCase(),keyword.toUpperCase()) - HowEqual(a.surname().toUpperCase(),keyword.toUpperCase());
+                    });
+                }
+                if (self.selectedView() === "Books") {
+                    booksViewModel.books.sort(function(a,b){
+                        return HowEqual(b.title().toUpperCase(),keyword.toUpperCase()) - HowEqual(a.title().toUpperCase(),keyword.toUpperCase());
+                    });
+                }
+            } else {
+                console.log(';p;');
+                self.clear();
+            }
+        }
+    };
+    
     this.books = ko.observableArray("").subscribeTo("books_list");
     this.authors = ko.observableArray("").subscribeTo("authors_list");
     var cleard = false;
@@ -521,76 +582,83 @@ function ViewsModel() {
     }
 
     this.search = function () {
-        var keyword = $("#keyword").val();
+        if(!self.liveSearch()){
+            var keyword = this.keyword();
 
-        removalAuthor = [];
-
-        if (keyword !== null && keyword.length > 0) {
-            if (self.selectedView() === "Authors") {
-                var tempind = 0;
-
-               for (var i = 0; i < removalAuthor.length; i++) {
-                    authorsViewModel.addAutorEx(removalAuthor[i]);
-                }
-                removalAuthor = [];
-                for (var i = 0; i < self.authors().length; i++) {
-
-                    if (self.authors()[i].name() === keyword.valueOf() || self.authors()[i].surname() === keyword.valueOf()) {
-                    } else {
-                        removalAuthor[tempind] = self.authors()[i];
-                        tempind++;
-                    }
-                }
-
-                for (var j = 0; j < removalAuthor.length; j++) {
-                    authorsViewModel.removeAuthorFromTable(removalAuthor[j]);
-                }
-
-            }
-
-
-            if (self.selectedView() === "Books") {
-                var tempbid = 0;
-                for (var i = 0; i < removalBook.length; i++) {
-                    booksViewModel.addBookEx(removalBook[i]);
-                }
+            if (keyword !== null && keyword.length > 0) {
                 
-                removalBook = [];
-                for (var i = 0; i < self.books().length; i++) {
-                    if (self.books()[i].title() === keyword.valueOf() || self.books()[i].title_en() === keyword.valueOf() ||
-                            self.books()[i].isbn() === keyword.valueOf()) {
+                if (self.selectedView() === "Authors") {
+                    var tempind = 0;
 
-                    } else {
-                        removalBook[tempbid] = self.books()[i];
-                        tempbid++;
+                   for (var i = 0; i < removalAuthor.length; i++) {
+                        authorsViewModel.addAutorEx(removalAuthor[i]);
                     }
+                    removalAuthor = [];
+                    
+                    authorsViewModel.authors(authorsViewModel.authors().filter(function(a,b,c){
+                        if(a.name().toUpperCase() === keyword.valueOf().toUpperCase() 
+                                || a.surname().toUpperCase() === keyword.valueOf().toUpperCase())
+                            return true;
+                        else removalAuthor.push(a);
+                    }));
+
                 }
 
-                for (var j = 0; j < removalBook.length; j++) {
-                    booksViewModel.removeBookFromTable(removalBook[j]);
+
+                if (self.selectedView() === "Books") {
+                    var tempbid = 0;
+                    for (var i = 0; i < removalBook.length; i++) {
+                        booksViewModel.addBookEx(removalBook[i]);
+                    }
+
+                    booksViewModel.books(booksViewModel.books().filter(function(a,b,c){
+                        if (a.title().toUpperCase() === keyword.valueOf().toUpperCase() || a.title_en().toUpperCase() === keyword.valueOf().toUpperCase() ||
+                                a.isbn() === keyword.valueOf())
+                            return true;
+                        else removalBook.push(a);
+                    }));
+
                 }
 
+            } else {
+                if (self.selectedView() === "Authors") {
+                for (var i = 0; i < removalAuthor.length; i++) {
+                        authorsViewModel.addAutorEx(removalAuthor[i]);
+                    }
+                    removalAuthor = [];
+                } 
+                if (self.selectedView() === "Books") {
+                for (var i = 0; i < removalBook.length; i++) {
+                        booksViewModel.addBookEx(removalBook[i]);
+                    }
+
+                    removalBook = [];   
+                }
             }
-
         }
     };
 
     this.clear = function () {
-        $("#keyword").val("");
-        if (self.selectedView() === "Authors") {
-
-            for (var i = 0; i < removalAuthor.length; i++) {
-                authorsViewModel.addAutorEx(removalAuthor[i]);
+        this.keyword("");
+        if(self.liveSearch()){
+            authorsViewModel.sortIdDesc();
+            booksViewModel.sort(c_ID,false);
+        } else {
+            if (self.selectedView() === "Authors") {
+                                
+                for (var i = 0; i < removalAuthor.length; i++) {
+                    authorsViewModel.addAutorEx(removalAuthor[i]);
+                }
+                removalAuthor = [];
+                //authorsViewModel.clearAuthorFilter();
             }
-            removalAuthor = [];
-            //authorsViewModel.clearAuthorFilter();
-        }
-        if (self.selectedView() === "Books") {
-            for (var i = 0; i < removalBook.length; i++) {
-                booksViewModel.addBookEx(removalBook[i]);
+            if (self.selectedView() === "Books") {
+                for (var i = 0; i < removalBook.length; i++) {
+                    booksViewModel.addBookEx(removalBook[i]);
+                }
+                removalBook = [];
+                //booksViewModel.clearBooksFilter();
             }
-            removalBook = [];
-            //booksViewModel.clearBooksFilter();
         }
     };
 }
@@ -614,7 +682,7 @@ $(document).ready(function () {
         e.preventDefault();
     });
     $(".add_drop").click(function (e) {
-        $(".add_bar").slideToggle();
+        $(".add_bar").toggle();
     });
 
 
